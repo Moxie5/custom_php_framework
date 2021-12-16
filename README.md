@@ -1,1 +1,9 @@
 # Custom PHP Framework
+
+## The framework is not tested on production. If you use it on production you use it on your own risk.
+## The framework is created for education puroses
+----
+## Installation
+
+1. Download the archive or clone the project using git
+2. Run `composer install`
