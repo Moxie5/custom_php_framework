@@ -7,3 +7,4 @@
 
 1. Download the archive or clone the project using git
 2. Run `composer install`
+3. Use PHP version 8.0.0 or above
