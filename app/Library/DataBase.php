@@ -17,14 +17,13 @@ class DataBase
 
     public function __construct()
     {
-        require_once APPPATH . 'Config/DataBaseConfig.php';
-        $dsn = 'mysql:host=' . dbhost . ';dbname=' . dbname;
+        $dsn = 'mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'];
         $option = array(
             PDO::ATTR_PERSISTENT => true,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         );
         try {
-            $this->dbh = new PDO($dsn, dbuser, dbpass, $option);
+            $this->dbh = new PDO($dsn, $_ENV['DB_USER'], $_ENV['DB_PASS'], $option);
         } catch (\PDOException $e) {
             $this->error = $e->getMessage();
             echo $this->error;

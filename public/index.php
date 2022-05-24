@@ -14,6 +14,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 define('APPPATH', dirname(__DIR__) . '/app/');
+define('BASEPATH', dirname(__DIR__) . '/');
+
 //Simple debug
 function debug($str)
 {
@@ -22,15 +24,15 @@ function debug($str)
     echo "</pre>";
 }
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
 use App\Core\Core;
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(BASEPATH);
+$dotenv->load();
+
 $app = new Core();
-/**========================================= 
-*                   ROUTES 
-* =========================================*/
-$app->router->add('/', [App\Controllers\Home::class, 'index']);
-$app->router->add('/about', [App\Controllers\About\About::class, 'about']);
+
+require_once __DIR__ . '/../app/Config/Routes.php';
 
 $app->run();

@@ -13,7 +13,8 @@ class Home extends Controller
 {
     public function __construct()
     {
-        parent::__construct(); 
+        parent::__construct();
+        $this->model = $this->Model('Clients_Model');
     }
 
     public function index()
@@ -23,8 +24,9 @@ class Home extends Controller
 
         //Load Model use \ for subfolder
         // $data['data'] = $this->loadModel('Clients\Clients_Model')->get_clients();
-        // $data['data'] = $this->loadModel('Clients_Model')->get_clients();
-        $data['data'] = '';
+        // $data['data'] = $this->Model('Clients_Model')->get_clients();
+        $data['data'] = $this->model->get_clients();
+        // $data['data'] = '';
         $this->view->render('home', $data);
     }
 }

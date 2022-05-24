@@ -16,7 +16,7 @@ class Clients_Model extends Models
 
     public function get_clients()
     {
-        $this->db->query("SELECT * FROM clients");
+        $this->db->query("SELECT * FROM users");
         // $this->db->bind(':username', $username);
         $row = $this->db->single();
         // $this->db->rowCount();
