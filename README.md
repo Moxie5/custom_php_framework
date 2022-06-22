@@ -1,7 +1,7 @@
 # Custom PHP Framework
 
 ## The framework is not tested on production. If you use it on production you use it on your own risk.
-## The framework is created for education puroses
+## The framework was created for educational purposes
 ----
 ## Installation
 
