@@ -17,16 +17,18 @@ class DataBase
 
     public function __construct()
     {
-        $dsn = 'mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'];
-        $option = array(
-            PDO::ATTR_PERSISTENT => true,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        );
-        try {
-            $this->dbh = new PDO($dsn, $_ENV['DB_USER'], $_ENV['DB_PASS'], $option);
-        } catch (\PDOException $e) {
-            $this->error = $e->getMessage();
-            echo $this->error;
+        if(!empty($_ENV['DB_HOST']) || !empty($_ENV['DB_NAME']) || !empty($_ENV['DB_USER']) || !empty($_ENV['DB_PASS'])) {
+            $dsn = 'mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'];
+            $option = array(
+                PDO::ATTR_PERSISTENT => true,
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            );
+            try {
+                $this->dbh = new PDO($dsn, $_ENV['DB_USER'], $_ENV['DB_PASS'], $option);
+            } catch (\PDOException $e) {
+                $this->error = $e->getMessage();
+                echo $this->error;
+            }
         }
     }
 
@@ -34,7 +36,9 @@ class DataBase
 
     public function query($sql)
     {
-        $this->stmt = $this->dbh->prepare($sql);
+        if($this->dbh != '') {
+            $this->stmt = $this->dbh->prepare($sql);
+        }
     }
 
     //Bind Values
@@ -62,24 +66,41 @@ class DataBase
     //Execute statment
     public function execute()
     {
-        return $this->stmt->execute();
+        if($this->dbh != '') {
+            return $this->stmt->execute();
+        }
     }
 
     //Return multiple records
     public function resultAll()
     {
-        $this->execute();
-        return $this->stmt->fetchAll(PDO::FETCH_OBJ);
+        if($this->dbh != '') {
+            $this->execute();
+            return $this->stmt->fetchAll(PDO::FETCH_OBJ);
+        }
     }
     //Return a single record
     public function single()
     {
-        $this->execute();
-        return $this->stmt->fetch(PDO::FETCH_OBJ);
+        if($this->dbh != '') {
+            $this->execute();
+            return $this->stmt->fetch(PDO::FETCH_OBJ);
+        }
     }
     //Get row count
     public function rowCount()
     {
-        return $this->stmt->rowCount();
+        if($this->dbh != '') {
+            return $this->stmt->rowCount();
+        }
+    }
+
+    function __destruct() {
+        try {
+            $this->dbh = null; //Closes connection
+        } catch (PDOException $e) {
+            file_put_contents("Date: " . date('M j Y - G:i:s') . " ---- Error: " . $e->getMessage().PHP_EOL, FILE_APPEND);
+            die($e->getMessage());
+        }
     }
 }

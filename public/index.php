@@ -27,9 +27,11 @@ function debug($str)
 use App\Core\Core;
 
 require_once __DIR__ . '/../vendor/autoload.php';
-
-$dotenv = Dotenv\Dotenv::createImmutable(BASEPATH);
-$dotenv->load();
+$env = BASEPATH . '.env';
+if(file_exists($env)) {
+    $dotenv = Dotenv\Dotenv::createImmutable(BASEPATH);
+    $dotenv->load();
+}
 
 $app = new Core();
 
